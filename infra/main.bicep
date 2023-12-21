@@ -10,7 +10,7 @@ param environmentName string
 param location string
 
 param appServicePlanName string = ''
-param backendServiceName string = ''
+param backendServiceName string = 'Diggev01'
 param resourceGroupName string = ''
 
 param searchServiceName string = ''
