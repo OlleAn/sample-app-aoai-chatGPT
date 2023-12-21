@@ -10,15 +10,15 @@ param environmentName string
 param location string
 
 param appServicePlanName string = ''
-param backendServiceName string = 'Diggev01'
-param resourceGroupName string = ''
+param backendServiceName string = 'digge-app1' //Ändrat namn
+param resourceGroupName string = 'RG-RV-Digge-IAC-UTV' //Hårdkodat namn
 
 param searchServiceName string = ''
 param searchServiceResourceGroupName string = ''
-param searchServiceResourceGroupLocation string = location
+param searchServiceResourceGroupLocation string = 'westeurope' //location 
 param searchServiceSkuName string = ''
 param searchIndexName string = 'gptkbindex'
-param searchUseSemanticSearch bool = false
+param searchUseSemanticSearch bool = true //Ändrat till true
 param searchSemanticSearchConfig string = 'default'
 param searchTopK int = 5
 param searchEnableInDomain bool = true
@@ -31,7 +31,7 @@ param openAiResourceName string = ''
 param openAiResourceGroupName string = ''
 param openAiResourceGroupLocation string = location
 param openAiSkuName string = ''
-param openAIModel string = 'turbo16k'
+param openAIModel string = 'gpt-35-turbo-16k'
 param openAIModelName string = 'gpt-35-turbo-16k'
 param openAITemperature int = 0
 param openAITopP int = 1
@@ -40,7 +40,7 @@ param openAIStopSequence string = ''
 param openAISystemMessage string = 'You are an AI assistant that helps people find information.'
 param openAIApiVersion string = '2023-06-01-preview'
 param openAIStream bool = true
-param embeddingDeploymentName string = 'embedding'
+param embeddingDeploymentName string = 'text-embedding-ada-002'
 param embeddingModelName string = 'text-embedding-ada-002'
 
 // Used by prepdocs.py: Form recognizer
@@ -66,7 +66,7 @@ var tags = { 'azd-env-name': environmentName }
 
 // Organize resources in a resource group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: !empty(resourceGroupName) ? resourceGroupName : '${abbrs.resourcesResourceGroups}${environmentName}'
+  name: 'RG-RV-Digge-IAC-UTV' //!empty(resourceGroupName) ? resourceGroupName : '${abbrs.resourcesResourceGroups}${environmentName}'
   location: location
   tags: tags
 }
@@ -202,7 +202,7 @@ module cosmos 'db.bicep' = {
   scope: resourceGroup
   params: {
     accountName: !empty(cosmosAccountName) ? cosmosAccountName : '${abbrs.documentDBDatabaseAccounts}${resourceToken}'
-    location: 'eastus'
+    location: location
     tags: tags
     principalIds: [principalId, backend.outputs.identityPrincipalId]
   }
